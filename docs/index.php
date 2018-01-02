@@ -1,0 +1,295 @@
+﻿<?php
+
+ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+
+?>
+
+<html lang="en">
+  <head>
+  <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=windows-1255" />
+  
+     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+
+	  <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+	
+
+  </head>
+ 	
+	<body dir="rtl" >
+
+ <!-- Navigation -->
+    <nav class="navbar  navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a href="#menu-toggle"  id="menu-toggle">הסתר רשימה</a>  
+		<!-- 		<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">הסתר רשימה</a>  -->
+            </div>
+        </div>
+        <!-- /.container -->
+    </nav>
+	
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="#" >רשימת מתכונים</a></li>
+				
+				<?php	
+
+				$dir    = '/var/www/html/allRecipes/';
+				$files1 = scandir($dir);
+				
+				for ($x = 2 ,$pieces2 = array('foo') ; $x < sizeof($files1); $x++) {
+					$pieces1 = explode(" ", $files1[$x]);
+					if($pieces1[0] == $pieces2[0]) {	
+						
+						$pieces = explode(" ", $files1[$x-1]);
+						echo  '<li><a href="javascript:;" data-toggle="collapse" data-target="#'. $pieces[0].'"><i class="fa fa-fw fa-arrows-v"></i>'. $pieces[0].'<i class="fa fa-fw fa-caret-down"></i></a>';	
+						echo  '<ul id="'.$pieces[0].'" class="collapse">';
+						$pieces = explode(".", $files1[$x-1]);
+						echo  "<li><a href=\"#". $pieces[0]."\">". $pieces[0]."</a></li>";				
+						
+						unset($files1[$x-1]); // remove item at index 0
+						$files1 = array_values($files1); // 'reindex' array
+						$x--;
+						while($pieces1[0] == $pieces2[0]) {
+							$pieces = explode(".", $files1[$x]);
+							echo  "<li><a href=\"#". $pieces[0]."\">". $pieces[0]."</a></li>";	
+							unset($files1[$x]); // remove item at index 0
+							$files1 = array_values($files1); // 'reindex' array
+							$pieces1 = explode(" ", $files1[$x]);
+						}
+						echo  "</ul></li>";
+					} else {
+						$pieces = explode(".", $files1[$x-1]);
+						echo  "<li><a href=\"#". $pieces[0]."\">". $pieces[0]."</a></li>";
+					}					
+					$pieces2 = $pieces1;
+
+				}
+				$files1 = array_values($files1); // 'reindex' array
+				
+				
+				?>
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+						
+                        <h1>מתכונים של משפחת צרויה</h1>
+						<img src="images/מתכונים של משפחת צרויה.JPG" ></a>
+						<hr>
+						
+						<!--start Recipes--> 	
+						<?php	
+
+						$dir    = '/var/www/html/allRecipes/';
+						$files1 = scandir($dir);
+
+						for ($x = 2; $x < sizeof($files1); $x++) {
+							$pieces = explode(".", $files1[$x]);
+						//	writeMsg($pieces[0]);
+							
+							echo  "<a name=\"". $pieces[0]."\"></a>";
+							echo "<h2> ". $pieces[0]." </h2>";
+							
+							echo " <br /> ";
+							if (file_exists("images/".$pieces[0].'.jpg')) {
+							//	echo " <h4>תמונה</h4> ";
+							//	echo  '<img src="images/'. $pieces[0].'.jpg"></a>';
+								echo  '<img style="border:3px solid black;" src="images/'.$pieces[0].'.jpg" width="525" height="451"  />';
+								echo " <br /> ";
+								echo " <br /> ";
+							} else if (file_exists("images/".$pieces[0].'.JPG')) {
+							//	echo " <h4>תמונה</h4> ";
+							//	echo  '<img src="images/'.$pieces[0].'.JPG"></a>';
+								echo  '<img style="border:3px solid black;" src="images/'.$pieces[0].'.JPG" width="525" height="451"  />';
+								echo " <br /> ";
+								echo " <br /> ";
+								
+							}
+							echo " <br /> ";
+							readfile("/var/www/html/allRecipes/".$files1[$x]);
+							echo  '<hr>';  
+						}
+						
+					
+			//		readfile("/var/www/html/e.htm");
+				//	echo  '<hr>';  
+				//	readfile("/var/www/html/allRecipes/עוגת תפוזים.txt");
+
+				//	echo file_get_contents("/var/www/html/g.htm");
+			//			readfile("/var/www/html/f.htm");
+
+				/*		$userDoc = "/var/www/html/r.doc";
+						$text = parseWord($userDoc);
+						echo $text;
+*/
+		/*			$filename = "/var/www/html/r.docx";// or /var/www/html/file.docx
+
+						$content = read_file_docx($filename);
+						if($content !== false) {
+
+							echo nl2br($content);
+						}
+						else {
+							echo 'Couldn\'t the file. Please check that file.';
+						}
+						*/
+/*
+						function writeMsg($var2) {
+
+							echo  "<a name=\"". $var2."\"></a>";
+
+							header('Content-Type: text/html; charset=windows-1255');			
+							$myfile = fopen("allRecipes/". $var2.".txt" , "r") or die("Unable to open file!");
+								
+							echo  '<div class="common_content"> <h2>' . fgets($myfile). "</h2> ";
+							echo "<h6> <br /> </h6>";
+							while(1) {
+								$var1 = fgets($myfile);
+								if (trim($var1)== "מרכיבים"){
+									break;
+								}
+								echo "<h4>" ,$var1, "</h4>";
+							}
+							echo " <br /> ";
+							if (file_exists("images/".$var2.'.jpg')) {
+								echo  '<img src="images/'. $var2.'.jpg"></a>';
+							} else if (file_exists("images/".$var2.'.JPG')) {
+								echo  '<img src="images/'. $var2.'.JPG"></a>';
+							}
+							echo  '</div>';
+							echo  '<div class="top_content border_none">';
+							echo  '<div class="column_one">';
+							echo  '<h2>' , $var1,  ' <br /></h2>';
+							echo  '<h4>';
+							while(1) {
+								$var1 = fgets($myfile);
+								if (trim($var1)== "הוראות הכנה"){
+									break;
+								}
+								if (trim($var1)== ""){
+									echo ' <br />' ;
+									continue;
+								}
+								echo  '<li class="ingredient" itemprop="ingredients"> ';
+								echo $var1 ;
+								echo " </li> ";
+							}
+							echo  '</h4>';  
+							echo  '</div>';
+							echo  '<div class="column_two">';
+							echo  '<h2>' .$var1. ' <br /></h2>';	
+							echo  '<h4>' ;
+							while(1) {
+								$var1 = fgets($myfile);
+								echo $var1. " <br />";
+								if (feof($myfile)){
+									break;
+								}
+							}
+							echo '</h4>';										
+							echo  '</div>';
+							echo  '</div>';
+							fclose($myfile);		
+							echo  '<div class="clear"></div>';
+							echo  '<hr>';  
+						}	
+						//. end Recipes--> 
+						
+	
+						
+						function read_file_docx($filename){
+
+							$striped_content = '';
+							$content = '';
+
+							if(!$filename || !file_exists($filename)) return false;
+
+							$zip = zip_open($filename);
+
+							if (!$zip || is_numeric($zip)) return false;
+
+							while ($zip_entry = zip_read($zip)) {
+
+								if (zip_entry_open($zip, $zip_entry) == FALSE) continue;
+
+								if (zip_entry_name($zip_entry) != "word/document.xml") continue;
+
+								$content .= zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+
+								zip_entry_close($zip_entry);
+							}// end while
+
+							zip_close($zip);
+
+							//echo $content;
+							//echo "<hr>";
+							//file_put_contents('1.xml', $content);
+
+							$content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
+							$content = str_replace('</w:r></w:p>', "\r\n", $content);
+							$striped_content = strip_tags($content);
+
+							return $striped_content;
+						}
+
+*/
+
+						?>							  
+						
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+		if(document.getElementById("menu-toggle").innerHTML == "הסתר רשימה"){
+			document.getElementById("menu-toggle").innerHTML = "הצג רשימה";
+		} else  {
+			document.getElementById("menu-toggle").innerHTML = "הסתר רשימה";
+		}
+    });
+    </script>
+
+ </body>
+</html>
